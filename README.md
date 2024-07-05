@@ -29,7 +29,7 @@ This Docker Compose configuration sets up a comprehensive media management syste
 
 ### Setup
 
-1. **Clone the repository** (if applicable) or create a `docker-compose.yml` file with the provided configuration.
+1. **Clone the repository** or create a `docker-compose.yml` file with the provided configuration.
 
 2. **Adjust file paths**: Update the volume paths to your preferred directories. Replace `Path/for/config`, `Path/for/completed/downloads`, etc., with actual paths on your machine. This should be the ideal folder structure for the setup:
    ```plaintext
