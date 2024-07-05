@@ -1,0 +1,187 @@
+version: '3.8'
+services:
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kolkata
+      - WEBUI_PORT=8080
+      - TORRENTING_PORT=6881
+    volumes:
+      - Path/for/config:/config
+      - Path/for/completed/downloads:/downloads/complete
+      - Path/for/incomplete/downloads:/downloads/incomplete
+    ports:
+      - 8080:8080
+      - 6881:6881
+      - 6881:6881/udp
+    restart: unless-stopped
+
+  # plex:
+  #   image: lscr.io/linuxserver/plex:latest
+  #   container_name: plex
+  #   environment:
+  #     - PUID=1000
+  #     - PGID=1000
+  #     - TZ=Asia/Kolkata
+  #     - VERSION=docker
+  #   volumes:
+  #     - Path/for/config:/config
+  #     - Path/of/tv-shows/directory:/tv
+  #     - Path/of/movies/directory:/movies
+  #     - Path/of/music/directory:/music
+  #     - Path/of/others/directory:/other
+  #   ports:
+  #     - 32400:32400
+  #   restart: unless-stopped
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kolkata
+    volumes:
+      - Path/for/config:/config
+      - Path/for/main/directory:/movies
+      - Path/of/completed/downloads:/downloads/complete
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kolkata
+    volumes:
+      - Path/for/config:/config
+      - Path/for/main/directory:/tv
+      - Path/of/completed/downloads:/downloads/complete
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: lidarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kolkata
+    volumes:
+      - Path/for/config:/config
+      - Path/for/main/directory:/music
+      - Path/of/completed/downloads:/downloads/complete
+    ports:
+      - 8686:8686
+    restart: unless-stopped
+
+  readarr:
+    image: lscr.io/linuxserver/readarr:develop
+    container_name: readarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kolkata
+    volumes:
+      - Path/for/config:/config
+      - Path/for/main/directory:/books
+      - Path/of/completed/downloads:/downloads/complete
+    ports:
+      - 8787:8787
+    restart: unless-stopped
+
+  whisparr:
+    container_name: whisparr
+    image: hotio/whisparr:v1
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kolkata
+      - UMASK=002
+    volumes:
+      - Path/for/config:/config
+      - Path/for/main/directory:/whisparr_content
+      - Path/of/completed/downloads:/downloads/complete
+    ports:
+      - 6969:6969
+    restart: unless-stopped
+
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kolkata
+    volumes:
+      - Path/for/config:/config
+      - Path/of/movies/directory:/movies
+      - Path/of/tv-shows/directory:/tv
+    ports:
+      - 6767:6767
+    restart: unless-stopped
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kolkata
+    volumes:
+      - Path/for/config:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+
+  overseerr:
+    image: lscr.io/linuxserver/overseerr:latest
+    container_name: overseerr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kolkata
+    volumes:
+      - Path/for/config:/config
+    ports:
+      - 5055:5055
+    restart: unless-stopped
+
+  notifiarr:
+    image: golift/notifiarr
+    container_name: notifiarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kolkata
+      - API_KEY=YOUR-NOTIFIARR-API-KEY
+    volumes:
+      - Path/for/config:/config
+    ports:
+      - 5454:5454
+    restart: unless-stopped
+
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    environment:
+      - TZ=Asia/Kolkata
+    ports:
+      - 8191:8191
+    restart: unless-stopped
+
+  tor-privoxy:
+    image: dockage/tor-privoxy:latest
+    container_name: tor-privoxy
+    ports:
+      - 9050:9050 # Tor proxy
+      - 9051:9051 # Tor control port
+      - 8118:8118 # Privoxy
+    restart: unless-stopped
